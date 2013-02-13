@@ -12,7 +12,7 @@ class Collector extends Public_Controller
 
 	public function index()
 	{
-		$this->load->helper('phpQuery');
+		$this->load->helper('observer/phpQuery');
 		$selectors = $this->db->select()->get('observer_selectors')->result_array();
 		$date = date("Y-m-d H:i:s");
 		$dateHourly = date("Y-m-d H:i:s", time()-3600);
