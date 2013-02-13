@@ -1,0 +1,3 @@
+
+url = "http://mak.magyararanykereskedo.hu/artablazat.php?dev=HUF&for=F&typ=TORTARANY14K";
+$("#araktabla").find("table.beffhufTable td.beffhufadat").html()
