@@ -12,7 +12,7 @@ class Admin_charts extends Admin_Controller
 		$this->load->model(array('observer_categories_m'));
 		$this->load->model(array('observer_merchants_m'));
 		$this->load->model(array('observer_products_m'));
-		$this->lang->load(array('observer','merchants'));
+		$this->lang->load(array('observer', 'merchants'));
 	}
 
 	public function get_charts_data($products_id, $merchants_id, $categories_id)

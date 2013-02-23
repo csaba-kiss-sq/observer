@@ -27,6 +27,7 @@ class Admin extends Admin_Controller
 	{
 		$grid = $this->get_data_grid(date("Y-m-d"));
 		$this->template
+			->enable_parser(true)
 			->title($this->module_details['name'])
 			->build('admin/index', $grid);
 	}

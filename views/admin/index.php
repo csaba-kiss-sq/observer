@@ -19,7 +19,9 @@
 				<th width="200"></th>
 				<?php foreach ($table['products'] as $product): ?>
 					<th style="text-align: center">
+						<a href="{{ url:site }}admin/observer/charts/index/by_merchants/<?= $product['id']; ?>/1">
 						<?php echo $product['title']; ?>
+						</a>
 					</th>
 				<?php endforeach; ?>
 			</tr>
@@ -30,7 +32,9 @@
 				<?php foreach ($table['data'] as $index => $row): ?>
 				<tr>
 					<td>
+						<a href="{{ url:site }}admin/observer/charts/index/by_products/<?= $index; ?>/1">
 						<?php echo $merchants[$index] ?>
+						</a>
 					</td>
 					<?php foreach ($table['products'] as $product): ?>
 						<?php if(isset($row[$product['id']])): ?>
@@ -59,7 +63,7 @@
 $(document).ready(function() {
 	$('.inputGridDate').on("change", function(e) {
 		e.preventDefault();
-		window.location = "http://localhost/aranypont/index.php/admin/observer/grid/" + $(".inputGridDate").val();
+		window.location = "{{ url:site }}admin/observer/grid/" + $(".inputGridDate").val();
 	});
 })
 </script>
