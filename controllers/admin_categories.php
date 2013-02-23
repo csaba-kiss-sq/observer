@@ -33,6 +33,7 @@ class Admin_Categories extends Admin_Controller
 
 		$this->template
 			->title($this->module_details['name'])
+			->enable_parser(true)
 			->set('merchants', $merchants)
 			->set('pagination', $pagination)
 			->build('admin/categories/index');
@@ -83,7 +84,7 @@ class Admin_Categories extends Admin_Controller
 	public function edit($id = 0)
 	{
 		// Get the category
-		$merchant = $this->observer_merchants_m->get($id);
+		$merchant = $this->observer_categories_m->get($id);
 
 		// ID specified?
 		$merchant or redirect('admin/blog/categories/index');
@@ -93,7 +94,7 @@ class Admin_Categories extends Admin_Controller
 		// Validate the results
 		if ($this->form_validation->run())
 		{
-			$this->observer_merchants_m->update($id, $this->input->post())
+			$this->observer_categories_m->update($id, $this->input->post())
 				? $this->session->set_flashdata('success', sprintf(lang('merchants:edit_success'), $this->input->post('title')))
 				: $this->session->set_flashdata('error', lang('merchants:edit_error'));
 
