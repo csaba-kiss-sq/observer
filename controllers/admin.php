@@ -57,7 +57,7 @@ class Admin extends Admin_Controller
 		}
 
 		foreach ($categories as $category) {
-			ksort($result[$category['id']]['data']);
+			@ksort($result[$category['id']]['data']);
 		}
 
 		$merchants = array();

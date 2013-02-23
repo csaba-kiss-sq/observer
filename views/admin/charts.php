@@ -3,96 +3,117 @@
 </section>
 
 <section class="item">
+
 	<div class="content">
+        <div id="grafikon_target"></div>
+    </div>
 
-
-		<fieldset id="filters">
- 
-    <legend><?php echo lang('global:filters'); ?></legend>
- 
-    <?php echo form_open(); ?>
- 
-    <?php echo form_hidden('f_module', $module_details['slug']); ?>
-        <ul> 
-            <li id ="dropdown_type">
-                <?php echo form_dropdown('f_status', array(0 => 'Termékek', 1 => 'Kereskedők' )); ?>
-            </li>
-            <li>
-                <?php echo form_dropdown('f_status', $categories ); ?>
-            </li>
-
-        </ul>
-    <?php echo form_close(); ?>
-</fieldset>
-	<!-- {{ url:base }} -->
-		<dl>
-			<!-- <dt>Kereskedő neve</dt> -->
-			<!-- <dl>Kereskedő 1</dl> -->
-			<dt>Árfolyam</dt>
-			<dl>
-				<div id="lineChart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-				<div class="diagram"></div>
-				<a href="" class="diagramReload">Frissítés</a>
-			</dl>
-
-		</dl>
-	</div>
 </section>
 	
-
 <script type="text/javascript">
-var baseUrl =  "{{ url:base }}";
 
-$(document).ready(function() 
-{
-	var chart,
-		chartOptions;
+var seriesOptions = [],
+    <? if(!empty($products)): ?>
+    way = "by_products",
+    elements = <?= json_encode($products) ?>,
+    <? elseif(!empty($merchants)): ?>
+    way = "by_products",
+    elements = <?= json_encode($merchants) ?>,
+    <? endif; ?>
+    categories_id = <?= $params['categories_id']; ?>,
 
-	var chartOptions = {
-        chart: {
-            renderTo: 'lineChart',
-            type: 'line',
-            marginRight: 130,
-            marginBottom: 25
+    seriesCounter = 0,
+    API_URL = SITE_URL + "admin/observer/charts/get_charts_data/";
+
+function createChart() {
+
+    chart = new Highcharts.StockChart({
+
+        chart : {
+            renderTo : "grafikon_target"
         },
-        title: {
-            text: 'Árfolyamok alakulása termékeknként',
-            x: -20 //center
+
+         rangeSelector : {
+            buttons : [{
+                type : 'hour',
+                count : 12,
+                text : '12ó'
+            }, {
+                type : 'day',
+                count : 7,
+                text : '1hét'
+            }, {
+                type : 'month',
+                count : 1,
+                text : '1hó'
+            }, {
+                type : 'month',
+                count : 3,
+                text : '3hó'
+            }, {
+                type : 'year',
+                count : 1,
+                text : '1év'
+            }],
+            selected : 1,
+            //enabled:false,
+            inputEnabled : false
         },
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        },
+
         yAxis: {
-            title: {
-                text: 'Ár'
+            labels: {
+                formatter: function() {
+                    return (this.value > 0 ? '+' : '') + this.value;
+                }
             },
             plotLines: [{
                 value: 0,
-                width: 1,
-                color: '#808080'
+                width: 2,
+                color: 'silver'
             }]
         },
-        tooltip: {
-            formatter: function() {
-                    return '<b>'+ this.series.name +'</b><br/>'+
-                    this.x +': '+ this.y +' Ft.';
+        
+        plotOptions: {
+            series: {
+             //   compare: 'percent'
             }
+        }, 
+        
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+            valueDecimals: 2
         },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -10,
-            y: 100,
-            borderWidth: 0
-        },
-    };
+        
+        series: seriesOptions
+    });
+}
 
-    var series = Array();
-    eval("<?php echo $json; ?>");
+$( document ).ready( function() {
 
-    chartOptions.series = series;
-    chart = new Highcharts.Chart(chartOptions);
+    $.each( elements, function( i, name ) {
+
+        if( way == 'by_products' ) {
+            products_id = name;
+            merchants_id = "<?= $params['constant_id']; ?>";
+        } else {
+            products_id = "<?= $params['constant_id']; ?>";
+            merchants_id = name;
+        } 
+
+        $.getJSON( API_URL + '/' + products_id + '/' + merchants_id + '/' + categories_id, function( data ) {
+
+            seriesOptions[i] = {
+                name : name,
+                data : data
+            };
+
+            seriesCounter++;
+
+            if ( seriesCounter == elements.length ) {
+                createChart();
+            }
+        });
+    });
 });
+
 </script>

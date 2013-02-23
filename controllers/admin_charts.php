@@ -15,81 +15,56 @@ class Admin_charts extends Admin_Controller
 		$this->lang->load(array('observer','merchants'));
 	}
 
-	public function index($type = 0, $category = 1)
+	public function get_charts_data($products_id, $merchants_id, $categories_id)
 	{
-		if($type == 0) 
-		{
-			$products = $this->observer_products_m->get_dropdown();
+		$json = array();
 
-			$lines = array();
+		$data_array = $this->db->order_by('created_i', 'ASC')
+		    ->select('MAX(price) as price, DATE_FORMAT( created,"%Y-%m-%d %H:00:00") as created_i', FALSE)
+		    ->group_by('created_i')
+		    ->get_where('default_observer_data', array(
+		    	'observer_merchants_id' => $products_id, 
+		    	'observer_products_id' => $merchants_id, 
+		    	'created >=' => date('Y-m-d', strtotime("-2 week")) 
+		    	) 
+		    )->result();
 
-			foreach($products as $product_id => $product_title) 
-			{
-				$pricesArray = array();
+	        foreach ($data_array as $row) {
 
-				$data = $this->db->select()
-					->where('observer_data.observer_products_id = ', $product_id)
-					->where('observer_data.observer_merchants_id = ', 4)
-					->order_by('created', 'DESC')
-					->get('observer_data')->result_array();
+            $json[] = array(strtotime($row->created_i) * 1000, (float) $row->price );
+        }
 
-				$data = array_reverse($data);
-
-				foreach ($data as $key => $value) 
-				{
-					$pricesArray[] = $value['price'];
-				}
-				
-				$prices = implode(', ', $pricesArray);
-				$lines[] = '{name: \''.$product_title.'\', data: ['.$prices.']}';
-			}
+        if(!empty($json))
+        {
+        	echo json_encode($json);
+		} else {
+			echo "[[1360936800000,0],[1360944000000,0],[1361120400000,0]]";
 		}
-		else 
-		{
-			$merchants = $this->observer_merchants_m->get_dropdown();
+	}
 
-			$lines = array();
-
-			foreach($merchants as $merchant_id => $merchant_title) 
-			{
-				$pricesArray = array();
-
-				$data = $this->db->select()
-					->where('observer_data.observer_products_id = ', 4)
-					->where('observer_data.observer_merchants_id = ', $merchant_id)
-					->order_by('created', 'DESC')
-					->get('observer_data')->result_array();
-
-				$data = array_reverse($data);
-
-				foreach ($data as $key => $value) 
-				{
-					$pricesArray[] = $value['price'];
-				}
-				
-				$prices = implode(', ', $pricesArray);
-				$lines[] = '{name: \''.$merchant_title.'\', data: ['.$prices.']}';
-			}
-		}
-
- 
-		$json = 'series = ['. implode(', ', $lines).'];';
-
-		$series = array(
-			'series' => json_encode(array(
-				'name' => 'Termék 1',
-				'data' => $pricesArray,
-			)),
-			'json' => $json,
-			'categories' => $this->observer_categories_m->get_dropdown(),
-			'merchants'  => $this->observer_merchants_m->get_dropdown(),
-			'products'   => $this->observer_products_m->get_dropdown(),
+	public function index($way, $constant_id, $categories_id)
+	{
+		$view['params'] = array(
+			'constant_id'   => $constant_id,
+			'categories_id' => $categories_id
 		);
+
+		switch ($way) {
+			case 'by_products':
+				$view['products'] = array( '2', '3', '4', '5' );
+				break;
+			
+			case 'by_merchants':
+				$view['merchants'] = array( '1', '2', '3', '4', '5' );
+				break;
+		}
 
 		$this->template
 			->enable_parser(true)
 			->title($this->module_details['name'])
 			->append_js('module::highcharts.js')
-			->build('admin/charts', $series);
+			->append_js('module::highcharts-more.js')
+			->append_js('module::highstock.js')
+			->build('admin/charts', $view);
 	}
 }

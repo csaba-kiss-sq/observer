@@ -23,6 +23,33 @@ class Observer_data_m extends MY_Model
 		return $this->db->get($this->_table)->row();
 	}
 
+	public function get_data($product_id, $merchants_id)
+	{
+		$sql = "SELECT  
+				d.*
+			FROM (
+	        	SELECT  MAX(UNIX_TIMESTAMP(created)) AS mts
+		        FROM  default_observer_data 
+		        GROUP BY HOUR(created) ) s
+			JOIN default_observer_data d
+			ON UNIX_TIMESTAMP(created) = s.mts
+			WHERE  
+				DATE(created) = '2013-02-15' AND 
+				d.observer_products_id = {$product_id} AND
+				d.observer_merchants_id = {$merchants_id}
+			";	
+
+		$data = $this->db->query($sql)->result_array();
+		$data = array_reverse($data);
+
+		if(!empty($data))  {
+		var_dump($data);
+die;
+}
+
+		return $data;
+	}
+
 
 	/*
 	public function get_all()

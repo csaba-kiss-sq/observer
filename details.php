@@ -17,7 +17,7 @@ class Module_Observer extends Module
 			),
 			'frontend' => false,
 			'backend' => true,
-			'menu' => 'obsever',
+			'menu' => 'content',
 
 			'sections' => array(
 				'observer' => array(
@@ -78,6 +78,15 @@ class Module_Observer extends Module
 
 		return $info;
 	}
+
+	/*public function admin_menu(&$menu)
+	{
+		unset($menu['lang:cp:nav_observer']);
+
+		$menu['lang:cp:nav_observer'] = 'admin/observer';
+
+		add_admin_menu_place('lang:cp:nav_observer', 10);
+	}*/
 
 	public function install()
 	{
@@ -225,11 +234,19 @@ class Module_Observer extends Module
 		*/
 
 		// todo
-		$this->db->insert('observer_data', array('id' => 1, 'observer_products_id' => 1, 'observer_merchants_id' => 1, 'price' => 6000, 'created' => 0)); 
-		$this->db->insert('observer_data', array('id' => 2, 'observer_products_id' => 2, 'observer_merchants_id' => 1, 'price' => 6500, 'created' => 0)); 
-		$this->db->insert('observer_data', array('id' => 3, 'observer_products_id' => 3, 'observer_merchants_id' => 1, 'price' => 7200, 'created' => 0)); 
-		$this->db->insert('observer_data', array('id' => 4, 'observer_products_id' => 4, 'observer_merchants_id' => 1, 'price' => 7500, 'created' => 0)); 
-		$this->db->insert('observer_data', array('id' => 5, 'observer_products_id' => 5, 'observer_merchants_id' => 1, 'price' => 8000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 1, 'observer_products_id' => 1, 'observer_merchants_id' => 1, 'price' => 3600, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 2, 'observer_products_id' => 2, 'observer_merchants_id' => 1, 'price' => 4000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 3, 'observer_products_id' => 3, 'observer_merchants_id' => 1, 'price' => 6250, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 4, 'observer_products_id' => 4, 'observer_merchants_id' => 1, 'price' => 8100, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 5, 'observer_products_id' => 5, 'observer_merchants_id' => 1, 'price' => 10675, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 6, 'observer_products_id' => 6, 'observer_merchants_id' => 1, 'price' => 1000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 7, 'observer_products_id' => 7, 'observer_merchants_id' => 1, 'price' => 1000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 8, 'observer_products_id' => 8, 'observer_merchants_id' => 1, 'price' => 1000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 9, 'observer_products_id' => 9, 'observer_merchants_id' => 1, 'price' => 1000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 10, 'observer_products_id' => 10, 'observer_merchants_id' => 1, 'price' => 1000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 11, 'observer_products_id' => 11, 'observer_merchants_id' => 1, 'price' => 1000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 12, 'observer_products_id' => 12, 'observer_merchants_id' => 1, 'price' => 1000, 'created' => 0)); 
+		$this->db->insert('observer_data', array('id' => 13, 'observer_products_id' => 13, 'observer_merchants_id' => 1, 'price' => 1000, 'created' => 0)); 
 
 		return true;
 	}

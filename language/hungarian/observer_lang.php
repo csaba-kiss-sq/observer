@@ -6,3 +6,5 @@ $lang['observer:charts_title'] = 'Árfolyamok';
 $lang['observer:merchant']     = 'Kereskedő';
 $lang['observer:dashboard']    = 'Adatlap';
 $lang['observer:create_title'] = 'Kereskedő hozzáadása';
+
+$lang['cp:nav_observer']			= 'Árfolyamok';
