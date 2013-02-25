@@ -23,19 +23,24 @@ class Admin_charts extends Admin_Controller
 		);
 
 		$data_array = $this->db->order_by('created_i', 'ASC')
-		    ->select('MAX(price) as price, DATE_FORMAT( created,"%Y-%m-%d %H:00:00") as created_i', FALSE)
+		    ->select('MAX(price) as price, DATE_FORMAT( default_observer_data.created,"%Y-%m-%d %H:00:00") as created_i', FALSE)
+		    ->join('observer_products', 'observer_products.id = observer_data.observer_products_id')
 		    ->group_by('created_i')
 		    ->get_where('default_observer_data', array(
-		    	'observer_merchants_id' => $products_id, 
-		    	'observer_products_id' => $merchants_id, 
-		    	'created >=' => date('Y-m-d', strtotime("-2 week")) 
+		    	'observer_merchants_id'  => $merchants_id, 
+		    	'observer_products_id'   => $products_id, 
+		    	'observer_categories_id' => $categories_id,
+		    	'default_observer_data.created >=' => date('Y-m-d', strtotime("-2 week")) 
 		    	) 
 		    )->result();
 
-	        foreach ($data_array as $row) {
+        foreach ($data_array as $row) {
 
             $json['data'][] = array(strtotime($row->created_i) * 1000, (float) $row->price );
         }
+
+
+$this->db->join('comments', 'comments.id = blogs.id');
 
         if(empty($json['data']))
         {
@@ -53,11 +58,14 @@ class Admin_charts extends Admin_Controller
 
 		switch ($way) {
 			case 'by_products':
-				$view['products'] = $this->observer_products_m->get_dropdown();
+				$view['products'] = $this->observer_products_m->get_dropdown($categories_id);
 				break;
 			
 			case 'by_merchants':
-				$view['merchants'] =$this->observer_merchants_m->get_dropdown();
+				$merchants = $this->observer_merchants_m->get_dropdown();
+				unset( $merchants[1] );
+
+				$view['merchants'] = $merchants;
 				break;
 		}
 

@@ -17,7 +17,7 @@ var seriesOptions = [],
     way = "by_products",
     elements = <?= json_encode($products) ?>,
     <? elseif(!empty($merchants)): ?>
-    way = "by_products",
+    way = "by_merchants",
     elements = <?= json_encode($merchants) ?>,
     <? endif; ?>
     categories_id = <?= $params['categories_id']; ?>,
@@ -109,7 +109,7 @@ $( document ).ready( function() {
             merchants_id = i;
         } 
 
-        $.getJSON( API_URL + '/' + products_id + '/' + merchants_id + '/' + categories_id, function( resopnseJSON ) {
+        $.getJSON( API_URL + products_id + '/' + merchants_id + '/' + categories_id, function( resopnseJSON ) {
 
             if( resopnseJSON.success ) {
                 seriesOptions[index] = {

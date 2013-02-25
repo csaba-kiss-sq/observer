@@ -18,9 +18,15 @@ class Observer_products_m extends MY_Model
 		));
 	}
 
-	public function get_dropdown()
+	public function get_dropdown($categories_id = null)
 	{
-		$rows = $this->db->select()->get('observer_products')->result_array();
+
+		if( $categories_id ) {
+			$rows = $this->db->select()->where('observer_categories_id =', $categories_id)->get('observer_products')->result_array();
+		} else {
+			$rows = $this->db->select()->get('observer_products')->result_array();
+		}
+		
 		$result = array();
 		foreach ($rows as $row) {
 			$result[$row['id']] = $row['title'];
