@@ -26,16 +26,9 @@ class Admin_Categories extends Admin_Controller
 	{
 		$this->pyrocache->delete_all('module_m');
 
-		$total_rows = $this->observer_categories_m->count_all();
-		$pagination = create_pagination('admin/observer/categories/index', $total_rows, null, 5);
-
-		$merchants = $this->observer_categories_m->order_by('title')->limit($pagination['limit'])->get_all();
-
 		$this->template
 			->title($this->module_details['name'])
 			->enable_parser(true)
-			->set('merchants', $merchants)
-			->set('pagination', $pagination)
 			->build('admin/categories/index');
 	}
 
@@ -83,10 +76,8 @@ class Admin_Categories extends Admin_Controller
 	 */
 	public function edit($id = 0)
 	{
-		// Get the category
 		$merchant = $this->observer_categories_m->get($id);
 
-		// ID specified?
 		$merchant or redirect('admin/blog/categories/index');
 
 		$this->form_validation->set_rules('id', 'ID', 'trim|required|numeric');
@@ -117,7 +108,7 @@ class Admin_Categories extends Admin_Controller
 			->title($this->module_details['name'], sprintf(lang('merchants:edit_title'), $merchant->title))
 			->set('merchant', $merchant)
 			->set('mode', 'edit')
-			->build('admin/merchants/form');
+			->build('admin/categories/form');
 	}
 
 	/**

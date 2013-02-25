@@ -12,7 +12,7 @@ class Admin extends Admin_Controller
 		$this->load->model(array('observer_categories_m'));
 		$this->load->model(array('observer_merchants_m'));
 		$this->load->model(array('observer_products_m'));
-		$this->lang->load(array('observer','merchants'));
+		$this->lang->load(array('observer', 'merchants'));
 	}
 
 	public function grid($date) 
@@ -20,6 +20,7 @@ class Admin extends Admin_Controller
 		$grid = $this->get_data_grid($date);
 		$this->template
 			->title($this->module_details['name'])
+			->enable_parser(true)
 			->build('admin/index', $grid);
 	}
 

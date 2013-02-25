@@ -1,5 +1,5 @@
 <section class="title">
-	<h4><?php echo lang('categories:list_title') ?></h4>
+	<h4>Kategóriák</h4>
 </section>
 
 <section class="item">
@@ -11,8 +11,8 @@
 		<table border="0" class="table-list" cellspacing="0">
 			<thead>
 			<tr>
-				<th><?php echo lang('merchants:category_label') ?></th>
-				<th width="200" style="text-align: center"></th>
+				<th>Kategóriák</th>
+				<th width="90" style="text-align: center"></th>
 			</tr>
 			</thead>
 			<tfoot>
@@ -38,4 +38,7 @@
 		{{ /streams:cycle }}
 
 	</div>
+
+	<br />
+
 </section>

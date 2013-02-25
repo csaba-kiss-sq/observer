@@ -17,7 +17,10 @@ class Admin_charts extends Admin_Controller
 
 	public function get_charts_data($products_id, $merchants_id, $categories_id)
 	{
-		$json = array();
+		$json = array(
+			'data'    => array(),
+			'success' => true
+		);
 
 		$data_array = $this->db->order_by('created_i', 'ASC')
 		    ->select('MAX(price) as price, DATE_FORMAT( created,"%Y-%m-%d %H:00:00") as created_i', FALSE)
@@ -31,15 +34,14 @@ class Admin_charts extends Admin_Controller
 
 	        foreach ($data_array as $row) {
 
-            $json[] = array(strtotime($row->created_i) * 1000, (float) $row->price );
+            $json['data'][] = array(strtotime($row->created_i) * 1000, (float) $row->price );
         }
 
-        if(!empty($json))
+        if(empty($json['data']))
         {
-        	echo json_encode($json);
-		} else {
-			echo "[[1360936800000,0],[1360944000000,0],[1361120400000,0]]";
-		}
+	       	$json['success'] = false;
+		} 
+		echo json_encode($json);
 	}
 
 	public function index($way, $constant_id, $categories_id)
@@ -51,11 +53,11 @@ class Admin_charts extends Admin_Controller
 
 		switch ($way) {
 			case 'by_products':
-				$view['products'] = array( '2', '3', '4', '5' );
+				$view['products'] = $this->observer_products_m->get_dropdown();
 				break;
 			
 			case 'by_merchants':
-				$view['merchants'] = array( '1', '2', '3', '4', '5' );
+				$view['merchants'] =$this->observer_merchants_m->get_dropdown();
 				break;
 		}
 

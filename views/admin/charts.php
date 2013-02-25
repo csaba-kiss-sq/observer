@@ -90,27 +90,43 @@ function createChart() {
 
 $( document ).ready( function() {
 
+    var index = 0;
+    var count = 0;
+
+    for (i in elements) {
+        if (elements.hasOwnProperty(i)) {
+            count++;
+        }
+    }
+
     $.each( elements, function( i, name ) {
 
         if( way == 'by_products' ) {
-            products_id = name;
+            products_id = i;
             merchants_id = "<?= $params['constant_id']; ?>";
         } else {
             products_id = "<?= $params['constant_id']; ?>";
-            merchants_id = name;
+            merchants_id = i;
         } 
 
-        $.getJSON( API_URL + '/' + products_id + '/' + merchants_id + '/' + categories_id, function( data ) {
+        $.getJSON( API_URL + '/' + products_id + '/' + merchants_id + '/' + categories_id, function( resopnseJSON ) {
 
-            seriesOptions[i] = {
-                name : name,
-                data : data
-            };
+            if( resopnseJSON.success ) {
+                seriesOptions[index] = {
+                    name : name,
+                    data : resopnseJSON.data
+                };
+                index++;
+            }
 
             seriesCounter++;
 
-            if ( seriesCounter == elements.length ) {
+            if ( seriesCounter == count ) {
+                
+                console.log(seriesOptions);
+
                 createChart();
+
             }
         });
     });
