@@ -24,10 +24,15 @@ class Module_Observer extends Module
 					'name' => 'observer:title',
 					'uri' => 'admin/observer',
 				),
-				'charts' => array(
+				'streams' => array(
+					'name' => 'Adatfolyam',
+					'uri'  => 'admin/streams',
+				),
+
+			/*	'charts' => array(
 					'name' => 'observer:charts_title',
 					'uri' => 'admin/observer/charts',
-				),
+				), 
 				'merchants' => array(
 					'name' => 'Kereskedők',
 					'uri' => 'admin/observer/merchants',
@@ -48,7 +53,7 @@ class Module_Observer extends Module
 							'uri' => 'admin/observer/product/create'
 						)
 					)
-				),
+				), 
 				'categories' => array(
 					'name' => 'Kategóriák',
 					'uri' => 'admin/observer/categories/',
@@ -72,7 +77,7 @@ class Module_Observer extends Module
 				'collector' => array(
 					'name' => 'Collector (devel)',
 					'uri'  => 'observer/collector' 
-				),
+				), */
 			),
 		);
 
@@ -302,7 +307,199 @@ class Module_Observer extends Module
 			'observer_products_id' => 4, 
 			'observer_merchants_id' => 5
 		));
-
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://golderado.hu/befektetesi-arany', 
+			'selector' => '#mainContent .product:eq(0) .investment_price:eq(0) > strong', 
+			'observer_products_id' => 13, 
+			'observer_merchants_id' => 3
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://golderado.hu/befektetesi-arany', 
+			'selector' => '#mainContent .product:eq(1) .investment_price:eq(0) > strong', 
+			'observer_products_id' => 12, 
+			'observer_merchants_id' => 3
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://golderado.hu/befektetesi-arany', 
+			'selector' => '#mainContent .product:eq(2) .investment_price:eq(0) > strong', 
+			'observer_products_id' => 11, 
+			'observer_merchants_id' => 3
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://golderado.hu/befektetesi-arany', 
+			'selector' => '#mainContent .product:eq(3) .investment_price:eq(0) > strong', 
+			'observer_products_id' => 10, 
+			'observer_merchants_id' => 3
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://golderado.hu/befektetesi-arany', 
+			'selector' => '#mainContent .product:eq(4) .investment_price:eq(0) > strong', 
+			'observer_products_id' => 9, 
+			'observer_merchants_id' => 3
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://golderado.hu/befektetesi-arany', 
+			'selector' => '#mainContent .product:eq(5) .investment_price:eq(0) > strong', 
+			'observer_products_id' => 8, 
+			'observer_merchants_id' => 3
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://golderado.hu/befektetesi-arany', 
+			'selector' => '#mainContent .product:eq(6) .investment_price:eq(0) > strong', 
+			'observer_products_id' => 7, 
+			'observer_merchants_id' => 3
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(0)', 
+			'observer_products_id' => 13, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(1)', 
+			'observer_products_id' => 12, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(2)', 
+			'observer_products_id' => 11, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(3)', 
+			'observer_products_id' => 10, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(4)', 
+			'observer_products_id' => 9, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(7)', 
+			'observer_products_id' => 8, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(8)', 
+			'observer_products_id' => 7, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(9)', 
+			'observer_products_id' => 6, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://mak.magyararanykereskedo.hu/artable.php?friss=yes&dev=HUF&for=F&typ=BEF', 
+			'selector' =>'tr.beffhufsor td.beffhufadat:eq(10)', 
+			'observer_products_id' => 5, 
+			'observer_merchants_id' => 2
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://www.conclude.hu/aranyrendeles?gclid=COyyqaqX6rQCFURY3godwT4A1g', 
+			'selector' =>'.productrow_5 .price_sell_HUF_0', 
+			'observer_products_id'  => 6, 
+			'observer_merchants_id' => 7
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://www.conclude.hu/aranyrendeles?gclid=COyyqaqX6rQCFURY3godwT4A1g', 
+			'selector' =>'.productrow_6 .price_sell_HUF_0', 
+			'observer_products_id'  => 7, 
+			'observer_merchants_id' => 7
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://www.conclude.hu/aranyrendeles?gclid=COyyqaqX6rQCFURY3godwT4A1g', 
+			'selector' =>'.productrow_7 .price_sell_HUF_0', 
+			'observer_products_id'  => 8, 
+			'observer_merchants_id' => 7
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://www.conclude.hu/aranyrendeles?gclid=COyyqaqX6rQCFURY3godwT4A1g', 
+			'selector' =>'.productrow_8 .price_sell_HUF_0', 
+			'observer_products_id'  => 9, 
+			'observer_merchants_id' => 7
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://www.conclude.hu/aranyrendeles?gclid=COyyqaqX6rQCFURY3godwT4A1g', 
+			'selector' =>'.productrow_9 .price_sell_HUF_0', 
+			'observer_products_id'  => 10, 
+			'observer_merchants_id' => 7
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://www.conclude.hu/aranyrendeles?gclid=COyyqaqX6rQCFURY3godwT4A1g', 
+			'selector' =>'.productrow_10 .price_sell_HUF_0', 
+			'observer_products_id'  => 11, 
+			'observer_merchants_id' => 7
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://www.conclude.hu/aranyrendeles?gclid=COyyqaqX6rQCFURY3godwT4A1g', 
+			'selector' =>'.productrow_11 .price_sell_HUF_0', 
+			'observer_products_id'  => 12, 
+			'observer_merchants_id' => 7
+		));
+		$this->insert_entry('observer_selectors', array(
+			'url' => 'http://www.conclude.hu/aranyrendeles?gclid=COyyqaqX6rQCFURY3godwT4A1g', 
+			'selector' =>'.productrow_12 .price_sell_HUF_0', 
+			'observer_products_id'  => 13, 
+			'observer_merchants_id' => 7
+		));
+		$this->insert_entry('observer_merchants', array('id' => 8, 'title' => 'Stargold', 'website' => 'http://www.solargold.hu', 'description' => '', 'map' => '' ));
+		$this->insert_entry('observer_selectors', array( // 5g
+		'url' => 'http://solargold.hu/tombarany-adas-vetel.html', 
+			'selector' =>'.goldtable tr:eq(2) td:eq(4) span:eq(0)', 
+			'observer_products_id'  => 6, 
+			'observer_merchants_id' => 8
+		));
+		$this->insert_entry('observer_selectors', array( // 10g
+			'url' => 'http://solargold.hu/tombarany-adas-vetel.html', 
+			'selector' =>'.goldtable tr:eq(3) td:eq(4) span:eq(0)', 
+			'observer_products_id'  => 7, 
+			'observer_merchants_id' => 8
+		));
+		$this->insert_entry('observer_selectors', array( // 20g
+			'url' => 'http://solargold.hu/tombarany-adas-vetel.html', 
+			'selector' =>'.goldtable tr:eq(4) td:eq(4) span:eq(0)', 
+			'observer_products_id'  => 8, 
+			'observer_merchants_id' => 8
+		));
+		$this->insert_entry('observer_selectors', array( // 50g
+			'url' => 'http://solargold.hu/tombarany-adas-vetel.html', 
+			'selector' =>'.goldtable tr:eq(6) td:eq(4) span:eq(0)', 
+			'observer_products_id'  => 9, 
+			'observer_merchants_id' => 8
+		));
+		$this->insert_entry('observer_selectors', array( // 100g
+			'url' => 'http://solargold.hu/tombarany-adas-vetel.html', 
+			'selector' =>'.goldtable tr:eq(8) td:eq(4) span:eq(0)', 
+			'observer_products_id'  => 10, 
+			'observer_merchants_id' => 8
+		));	
+		$this->insert_entry('observer_selectors', array( // 250g
+			'url' => 'http://solargold.hu/tombarany-adas-vetel.html', 
+			'selector' =>'.goldtable tr:eq(9) td:eq(4) span:eq(0)', 
+			'observer_products_id'  => 11, 
+			'observer_merchants_id' => 8
+		));	
+		$this->insert_entry('observer_selectors', array( // 500g
+			'url' => 'http://solargold.hu/tombarany-adas-vetel.html', 
+			'selector' =>'.goldtable tr:eq(10) td:eq(4) span:eq(0)', 
+			'observer_products_id'  => 12, 
+			'observer_merchants_id' => 8
+		));		
+		$this->insert_entry('observer_selectors', array( // 1000g
+			'url' => 'http://solargold.hu/tombarany-adas-vetel.html', 
+			'selector' =>'.goldtable tr:eq(11) td:eq(4) span:eq(0)', 
+			'observer_products_id'  => 13, 
+			'observer_merchants_id' => 8
+		));		
 		$this->insert_entry('observer_data', array('id' => 1, 'observer_products_id' => 1, 'observer_merchants_id' => 1, 'price' => 3600, 'created' => 0)); 
 		$this->insert_entry('observer_data', array('id' => 2, 'observer_products_id' => 2, 'observer_merchants_id' => 1, 'price' => 4000, 'created' => 0)); 
 		$this->insert_entry('observer_data', array('id' => 3, 'observer_products_id' => 3, 'observer_merchants_id' => 1, 'price' => 6250, 'created' => 0)); 

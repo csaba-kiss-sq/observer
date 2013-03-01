@@ -21,6 +21,7 @@ class Admin extends Admin_Controller
 		$this->template
 			->title($this->module_details['name'])
 			->enable_parser(true)
+			->append_js('module::jquery.dataTables.min.js')
 			->build('admin/index', $grid);
 	}
 
@@ -30,6 +31,7 @@ class Admin extends Admin_Controller
 		$this->template
 			->enable_parser(true)
 			->title($this->module_details['name'])
+			->append_js('module::jquery.dataTables.min.js')
 			->build('admin/index', $grid);
 	}
 
@@ -47,12 +49,31 @@ class Admin extends Admin_Controller
 
 		foreach ($products as $product) {
 			$result[$product['observer_categories_id']]['products'][$product['id']] = $product;
-			$data = $this->db->select()
+
+			$sql = " 
+				SELECT price, observer_products_id, observer_merchants_id, created
+				FROM `default_observer_data`
+				WHERE `id` = (
+				    SELECT `id`
+				    FROM `default_observer_data` as `alt`
+				    WHERE `alt`.`observer_merchants_id` = `default_observer_data`.`observer_merchants_id`
+					AND observer_products_id = ".$product['id']."
+					AND created < '".$date." 23:59:59'
+					ORDER BY `created` DESC
+				    LIMIT 1
+				) 
+				ORDER BY `created` DESC";
+
+			/*
+			$data = $this->db->select('max(created) as created_date, pricwe,  observer_products_id, observer_merchants_id')
 				->where('observer_data.created < ', $date." 23:59:59" )
 				->where('observer_data.observer_products_id =', $product['id'])
 				->group_by(array('observer_merchants_id','observer_products_id'))
-				->order_by('created', 'DESC')
-				->get('observer_data')->result_array();
+ 				->get('observer_data')->result_array();
+			*/
+
+ 			$data = $this->db->query($sql)->result_array();
+
 			foreach ($data as $key => $value) {
 				$result[$product['observer_categories_id']]['data'][$value['observer_merchants_id']][$value['observer_products_id']]  = $value['price']; 
 			}	
