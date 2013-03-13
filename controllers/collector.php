@@ -18,6 +18,9 @@ class Collector extends Public_Controller
 
 	public function index($install = false)
 	{
+		$grid_cache = array();
+
+		$this->benchmark->mark('start');
 		$this->load->helper('observer/phpQuery');
 		$selectors = $this->db->select()->get('observer_selectors')->result_array();
 		$date = date("Y-m-d H:i:s");
@@ -30,46 +33,49 @@ class Collector extends Public_Controller
 
 			switch( $item->karat ) {
 				case '8':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 1;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 1;
+				break;
 				case '9':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 2;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 2;
+				break;
 				case '14':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 3;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 3;
+				break;
 				case '18':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 4;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 4;
+				break;
 				case '24':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 5;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 5;
+				break;
 			}
 
 			$dataRow = $this->db->select()
-				->where('observer_data.observer_products_id =', $products_id)
-				->where('observer_data.observer_merchants_id =', $merchants_id)
-			    ->where( 'observer_data.created > ', $dateHourly ) 
-				->get('observer_data')->row();
+			->where('observer_data.observer_products_id =', $products_id)
+			->where('observer_data.observer_merchants_id =', $merchants_id)
+			->where( 'observer_data.created > ', $dateHourly ) 
+			->get('observer_data')->row();
 
 			if (is_null($dataRow) || $dataRow->price != $price) {
-	 			$this->db->insert('observer_data', array(
-	 				'observer_products_id' => $products_id, 
-	 				'observer_merchants_id' => $merchants_id, 
-	 				'price' => $price, 
-	 				'created' => $date
- 				)); 
+				$this->db->insert('observer_data', array(
+					'observer_products_id' => $products_id, 
+					'observer_merchants_id' => $merchants_id, 
+					'price' => $price, 
+					'created' => $date
+					)); 
 			} 
+
+			$grid_cache[1]['data'][$merchants_id][$products_id]['price'] = $price;
+			$grid_cache[1]['data'][$merchants_id][$products_id]['sid']   = null;
 		} 
 
 		$content = file_get_contents("http://aranytomb.me/json?token=o1W6O6F6312V78U");
@@ -79,70 +85,72 @@ class Collector extends Public_Controller
 
 			switch( $item->suly ) {
 				case '5':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 6;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 6;
+				break;
 				case '10':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 7;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 7;
+				break;
 				case '20':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 8;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 8;
+				break;
 				case '50':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 9;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 9;
+				break;
 				case '100':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 10;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 10;
+				break;
 				case '250':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 11;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 11;
+				break;
 				case '500':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 12;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 12;
+				break;
 				case '1000':
- 					$price = (int)$item->huf_raw;
- 					$merchants_id = 1;
- 					$products_id  = 13;
-					break;
+				$price = (int)$item->huf_raw;
+				$merchants_id = 1;
+				$products_id  = 13;
+				break;
 			}
 
 			$dataRow = $this->db->select()
-				->where('observer_data.observer_products_id =', $products_id)
-				->where('observer_data.observer_merchants_id =', $merchants_id)
-			    ->where( 'observer_data.created > ', $dateHourly ) 
-				->get('observer_data')->row();
+			->where('observer_data.observer_products_id =', $products_id)
+			->where('observer_data.observer_merchants_id =', $merchants_id)
+			->where( 'observer_data.created > ', $dateHourly ) 
+			->get('observer_data')->row();
 
 			if (is_null($dataRow) || $dataRow->price != $price) {
-	 			$this->db->insert('observer_data', array(
-	 				'observer_products_id' => $products_id, 
-	 				'observer_merchants_id' => $merchants_id, 
-	 				'price' => $price, 
-	 				'created' => $date
- 				)); 
+				$this->db->insert('observer_data', array(
+					'observer_products_id' => $products_id, 
+					'observer_merchants_id' => $merchants_id, 
+					'price' => $price, 
+					'created' => $date
+					)); 
 			} 
+			$grid_cache[2]['data'][$merchants_id][$products_id]['price'] = $price;
+			$grid_cache[2]['data'][$merchants_id][$products_id]['sid']   = null;
 		}
 
 		foreach ($selectors as $selector) {
-		
+
 			$dataRow = $this->db->select()
-				->where('observer_data.observer_products_id =', $selector['observer_products_id'])
-				->where('observer_data.observer_merchants_id =', $selector['observer_merchants_id'])
-			    ->where( 'observer_data.created > ', $dateHourly ) 
-				->get('observer_data')->row();
+			->where('observer_data.observer_products_id =', $selector['observer_products_id'])
+			->where('observer_data.observer_merchants_id =', $selector['observer_merchants_id'])
+			->where( 'observer_data.created > ', $dateHourly ) 
+			->get('observer_data')->row();
 
 			$content = file_get_contents($selector['url']);
 
@@ -164,13 +172,29 @@ class Collector extends Public_Controller
 			$price = preg_replace('[\D]', '', $text);
 
 			if (is_null($dataRow) || $dataRow->price != $price) {
-	 			$this->db->insert('observer_data', array(
-	 				'observer_products_id' => $selector['observer_products_id'], 
-	 				'observer_merchants_id' => $selector['observer_merchants_id'], 
-	 				'price' => $price, 
-	 				'created' => $date
- 				)); 
+				$this->db->insert('observer_data', array(
+					'observer_products_id' => $selector['observer_products_id'], 
+					'observer_merchants_id' => $selector['observer_merchants_id'], 
+					'price' => $price, 
+					'created' => $date
+					)); 
 			} 
+			$grid_cache[3]['data'][$selector['observer_merchants_id']][$selector['observer_products_id']]['price'] = $price;
+			$grid_cache[3]['data'][$selector['observer_merchants_id']][$selector['observer_products_id']]['sid']   = $selector['id'];
 		}
+		$this->benchmark->mark('end');
+		echo $this->benchmark->elapsed_time('start', 'end');
+		$this->db->update('futtatva',array('futtatva'=>date('Y-m-d H:i:s',now())),array('id'=>1));
+
+		$actual_cache = array(
+			'date'      => $date,
+			'grid'      => $grid_cache,
+			'merchants' => $this->db->select()->order_by('ordering_count', 'ASC')->get('observer_merchants')->result_array();
+		);
+/*
+		$memcache = memcache_connect("localhost", 11211);
+
+		$memcache->add('data_grid', $actual_cache, false, 120);
+*/
 	}
 }

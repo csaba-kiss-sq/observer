@@ -122,8 +122,11 @@ $( document ).ready( function() {
             seriesCounter++;
 
             if ( seriesCounter == count ) {
+                
                 console.log(seriesOptions);
+
                 createChart();
+
             }
         });
     });

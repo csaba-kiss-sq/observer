@@ -15,6 +15,10 @@ class Admin extends Admin_Controller
 		$this->lang->load(array('observer', 'merchants'));
 	}
 
+	function teszt(){
+		echo intval('2 354 Ft');
+	}
+
 	public function grid($date) 
 	{
 		$grid = $this->get_data_grid($date);
@@ -37,6 +41,10 @@ class Admin extends Admin_Controller
 
 	private function get_data_grid($date)
 	{
+		$cache_key = md5("grid".$date);
+
+		$memcache = memcache_connect("localhost", 11211);
+
 		$categories = $this->db->select()->order_by('id', 'ASC')->get('observer_categories')->result_array();
 
 		foreach ($categories as $category) {
@@ -45,38 +53,44 @@ class Admin extends Admin_Controller
 			);
 		}
 
-		$products = $this->db->select()->order_by('id', 'ASC')->get('observer_products')->result_array();
+		$products  = $this->db->select()->order_by('id', 'ASC')->get('observer_products')->result_array();
+		$merchants = $this->db->select()->order_by('ordering_count', 'ASC')->get('observer_merchants')->result_array();
 
-		foreach ($products as $product) {
-			$result[$product['observer_categories_id']]['products'][$product['id']] = $product;
+		$cached = $memcache->get($cache_key);
+		if( empty($cached) ) {
 
-			$sql = " 
-				SELECT price, observer_products_id, observer_merchants_id, created
-				FROM `default_observer_data`
-				WHERE `id` = (
-				    SELECT `id`
-				    FROM `default_observer_data` as `alt`
-				    WHERE `alt`.`observer_merchants_id` = `default_observer_data`.`observer_merchants_id`
-					AND observer_products_id = ".$product['id']."
-					AND created < '".$date." 23:59:59'
-					ORDER BY `created` DESC
-				    LIMIT 1
-				) 
-				ORDER BY `created` DESC";
+			foreach ($products as $product) {
 
-			/*
-			$data = $this->db->select('max(created) as created_date, pricwe,  observer_products_id, observer_merchants_id')
-				->where('observer_data.created < ', $date." 23:59:59" )
-				->where('observer_data.observer_products_id =', $product['id'])
-				->group_by(array('observer_merchants_id','observer_products_id'))
- 				->get('observer_data')->result_array();
-			*/
+				foreach ($merchants as $merchant) {
 
- 			$data = $this->db->query($sql)->result_array();
+					$result[$product['observer_categories_id']]['products'][$product['id']] = $product;
 
-			foreach ($data as $key => $value) {
-				$result[$product['observer_categories_id']]['data'][$value['observer_merchants_id']][$value['observer_products_id']]  = $value['price']; 
-			}	
+		 			$sql = "SELECT d.*, s.id AS sid
+						FROM default_observer_data d
+						LEFT JOIN 
+							default_observer_selectors s
+						ON
+							d.observer_merchants_id = s.observer_merchants_id
+						AND
+							d.observer_products_id = s.observer_products_id
+						WHERE d.observer_products_id = ".$product['id']."
+						AND d.observer_merchants_id = ".$merchant['id']."
+						AND d.created >= '".$date." 00:00:00'
+			 			AND d.created < '".$date." 23:59:59'
+			 			ORDER BY created DESC";
+					$data = $this->db->query($sql)->row();
+
+					if(!empty($data)) {
+						$result[$product['observer_categories_id']]['data'][$merchant['id']][$product['id']]['price']  = $data->price; 
+						$result[$product['observer_categories_id']]['data'][$merchant['id']][$product['id']]['sid']  = $data->sid; 
+
+					}
+				}
+			}
+
+			$memcache->add($cache_key, $result, false, 120);
+		} else {
+			$result = $cached;
 		}
 
 		foreach ($categories as $category) {

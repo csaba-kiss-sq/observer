@@ -26,6 +26,8 @@ class Observer_products_m extends MY_Model
 		} else {
 			$rows = $this->db->select()->get('observer_products')->result_array();
 		}
+
+
 		
 		$result = array();
 		foreach ($rows as $row) {

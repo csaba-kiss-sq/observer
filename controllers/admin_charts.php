@@ -63,8 +63,6 @@ $this->db->join('comments', 'comments.id = blogs.id');
 			
 			case 'by_merchants':
 				$merchants = $this->observer_merchants_m->get_dropdown();
-				unset( $merchants[1] );
-
 				$view['merchants'] = $merchants;
 				break;
 		}
