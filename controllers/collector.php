@@ -185,16 +185,5 @@ class Collector extends Public_Controller
 		$this->benchmark->mark('end');
 		echo $this->benchmark->elapsed_time('start', 'end');
 		$this->db->update('futtatva',array('futtatva'=>date('Y-m-d H:i:s',now())),array('id'=>1));
-
-		$actual_cache = array(
-			'date'      => $date,
-			'grid'      => $grid_cache,
-			'merchants' => $this->db->select()->order_by('ordering_count', 'ASC')->get('observer_merchants')->result_array();
-		);
-/*
-		$memcache = memcache_connect("localhost", 11211);
-
-		$memcache->add('data_grid', $actual_cache, false, 120);
-*/
 	}
 }
